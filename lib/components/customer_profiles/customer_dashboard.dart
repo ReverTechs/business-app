@@ -1,3 +1,4 @@
+import 'package:business_app/components/customer_profiles/components/pages/products_ui.dart';
 import 'package:business_app/components/experimental_ui/imessage_ui.dart';
 import 'package:business_app/components/customer_profiles/bottom_sheets/more_display.dart';
 import 'package:business_app/components/customer_profiles/components/pages/groups_page.dart';
@@ -237,7 +238,7 @@ class _CustomerDashboardState extends State<CustomerDashboard>
                                         Column(
                                           children: [
                                             Text(
-                                              "8.6M",
+                                              "10,31M",
                                               style: TextStyle(
                                                 fontSize: 16,
                                                 fontWeight: FontWeight.bold,
@@ -377,7 +378,8 @@ class _CustomerDashboardState extends State<CustomerDashboard>
               // _buildTabContent('Products'),
               // _buildTabContent('Groups'),
               // _buildTabContent('Posts'),
-              ProductsPage(),
+              //ProductsPage(),
+              ProductsUi(),
               GroupsPage(),
               PostsPage(),
             ],

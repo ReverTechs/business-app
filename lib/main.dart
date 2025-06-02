@@ -4,7 +4,7 @@ import 'package:business_app/components/user_profiles/components/bottom_bar_page
 import 'package:business_app/components/user_profiles/components/bottom_bar_pages/messages_ui.dart';
 import 'package:business_app/components/user_profiles/components/bottom_bar_pages/search_ui.dart';
 import 'package:business_app/components/user_profiles/components/bottom_bar_pages/subscribe_ui.dart';
-import 'package:business_app/components/user_profiles/customer_dashboard.dart';
+import 'package:business_app/components/customer_profiles/customer_dashboard.dart';
 import 'package:business_app/const/assets.dart';
 import 'package:business_app/const/constant_texts.dart';
 import 'package:business_app/themes/theme_provider.dart';
