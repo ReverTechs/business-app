@@ -1,3 +1,4 @@
+import 'package:business_app/components/customer_profiles/components/pages/shop_ui.dart';
 import 'package:business_app/const/assets.dart';
 import 'package:flutter/material.dart';
 
@@ -43,18 +44,12 @@ class ProductsUi extends StatelessWidget {
                 height: 80,
                 child: ListView(
                   scrollDirection: Axis.horizontal,
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  physics: const BouncingScrollPhysics(),
-                  children: [
-                    BrandCircle(brandImage: Assets.product4),
-                    SizedBox(width: 16),
-                    BrandCircle(brandImage: Assets.trademateLogo),
-                    SizedBox(width: 16),
-                    BrandCircle(brandImage: Assets.product4),
-                    SizedBox(width: 16),
-                    BrandCircle(brandImage: Assets.trademateLogo),
-                    SizedBox(width: 16),
-                    BrandCircle(brandImage: Assets.product4),
+                  children: const [
+                    _BrandLogo(assetPath: Assets.product1),
+                    _BrandLogo(assetPath: Assets.product2),
+                    _BrandLogo(assetPath: Assets.product3),
+                    _BrandLogo(assetPath: Assets.product4),
+                    _BrandLogo(assetPath: Assets.product1),
                   ],
                 ),
               ),
@@ -78,7 +73,7 @@ class ProductsUi extends StatelessWidget {
                     TextButton(
                       onPressed: () {},
                       child: const Text(
-                        'See ALL',
+                        'See all',
                         style: TextStyle(color: Colors.grey, fontSize: 14),
                       ),
                     ),
@@ -98,23 +93,23 @@ class ProductsUi extends StatelessWidget {
                       title: 'Pure Decent',
                       rating: 5,
                       colors: 5,
-                      price: 250,
+                      price: 250000,
                     ),
                     SizedBox(width: 16),
                     ShoeCard(
                       image: Assets.product2,
                       title: 'Dr. Martens',
                       rating: 5,
-                      colors: 3,
-                      price: 230,
+                      colors: 8,
+                      price: 130500,
                     ),
                     SizedBox(width: 16),
                     ShoeCard(
                       image: Assets.product3,
-                      title: 'black sneakers',
-                      rating: 5,
-                      colors: 3,
-                      price: 230,
+                      title: 'Sneakers',
+                      rating: 3,
+                      colors: 4,
+                      price: 50000,
                     ),
                   ],
                 ),
@@ -125,15 +120,16 @@ class ProductsUi extends StatelessWidget {
                   children: [
                     Text(
                       "You're all catched up 👍! ",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
-                        color: Colors.grey,
-                      ),
+                      style: TextStyle(fontSize: 16, color: Colors.grey),
                     ),
                     const SizedBox(height: 8),
                     OutlinedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => ShopUi()),
+                        );
+                      },
                       style: OutlinedButton.styleFrom(
                         side: BorderSide(color: Colors.grey),
                         shape: RoundedRectangleBorder(
@@ -170,8 +166,7 @@ class BrandCircle extends StatelessWidget {
       height: 60,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        //color: Colors.grey[200],
-        color: Colors.transparent,
+        color: Colors.grey[200],
       ),
       child: Center(
         child: Image.asset(
@@ -180,6 +175,24 @@ class BrandCircle extends StatelessWidget {
           height: 40,
           fit: BoxFit.contain,
         ),
+      ),
+    );
+  }
+}
+
+class _BrandLogo extends StatelessWidget {
+  final String assetPath;
+
+  const _BrandLogo({Key? key, required this.assetPath}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: CircleAvatar(
+        radius: 30,
+        backgroundImage: AssetImage(assetPath),
+        backgroundColor: Colors.grey[200],
       ),
     );
   }
@@ -256,6 +269,7 @@ class ShoeCard extends StatelessWidget {
                   style: const TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.bold,
+                    color: Colors.black,
                   ),
                 ),
                 const SizedBox(height: 4),
@@ -279,10 +293,11 @@ class ShoeCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      '\$$price',
+                      '\MWK$price',
                       style: const TextStyle(
-                        fontSize: 16,
+                        fontSize: 14,
                         fontWeight: FontWeight.bold,
+                        color: Colors.black,
                       ),
                     ),
                     Icon(Icons.shopping_cart, color: Colors.red[400], size: 20),

@@ -3,7 +3,7 @@ import 'package:business_app/components/experimental_ui/imessage_ui.dart';
 import 'package:business_app/components/customer_profiles/bottom_sheets/more_display.dart';
 import 'package:business_app/components/customer_profiles/components/pages/groups_page.dart';
 import 'package:business_app/components/customer_profiles/components/pages/posts_page.dart';
-import 'package:business_app/components/customer_profiles/components/pages/products_page.dart';
+
 import 'package:business_app/main.dart';
 import 'package:flutter/material.dart';
 
