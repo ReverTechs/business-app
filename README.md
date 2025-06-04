@@ -1,6 +1,6 @@
 # business_app
 
-A new Flutter project.
+Trading and Marketplace.
 
 ## Getting Started
 
