@@ -18,151 +18,119 @@ class ShopUi extends StatelessWidget {
             pinned: true,
             expandedHeight: 160,
             elevation: 0,
-            //leading icon
-            leading: Row(
-              children: [
-                SizedBox(width: 16),
-                Container(
-                  width: 40,
-                  height: 40,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    gradient: RadialGradient(
-                      colors: [
-                        Colors.black.withOpacity(0.5),
-                        Colors.black.withOpacity(0.1),
-                      ],
-                      stops: [0.4, 1.0],
-                      center: Alignment.center,
-                      radius: 1.0,
-                    ),
-                  ),
-                  child: IconButton(
-                    icon: Icon(Icons.arrow_back, color: Colors.white),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => CustomerDashboard(),
-                        ),
-                      );
-                    },
+            leading: Padding(
+              padding: const EdgeInsets.only(left: 8.0),
+              child: Container(
+                width: 40,
+                height: 40,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  gradient: RadialGradient(
+                    colors: [
+                      Colors.black.withOpacity(0.5),
+                      Colors.black.withOpacity(0.1),
+                    ],
+                    stops: const [0.4, 1.0],
+                    center: Alignment.center,
+                    radius: 1.0,
                   ),
                 ),
-              ],
+                child: IconButton(
+                  icon: const Icon(Icons.arrow_back, color: Colors.white),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => CustomerDashboard(),
+                      ),
+                    );
+                  },
+                ),
+              ),
             ),
-            //ends here
-            flexibleSpace: LayoutBuilder(
-              builder: (context, constraints) {
-                // Calculate whether the app bar is collapsed
-                final isCollapsed =
-                    constraints.maxHeight <= kToolbarHeight + 10;
-
-                return FlexibleSpaceBar(
-                  centerTitle: false,
-                  titlePadding: const EdgeInsets.only(left: 16, bottom: 16),
-                  title:
-                      isCollapsed
-                          ? Text(
-                            "Hello, $username",
-                            style: const TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.grey,
-                            ),
-                          )
-                          : null,
-                  background: Container(
-                    padding: const EdgeInsets.only(left: 16, bottom: 60),
-                    alignment: Alignment.bottomLeft,
-                    decoration: const BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [Colors.red, Colors.orange],
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
+            flexibleSpace: FlexibleSpaceBar(
+              centerTitle: false,
+              titlePadding: const EdgeInsets.only(left: 8.0, bottom: 16.0),
+              title: Text(
+                "Hello, $username",
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  //color: Colors.grey,
+                ),
+              ),
+              background: Container(
+                padding: const EdgeInsets.only(left: 8.0, bottom: 60.0),
+                alignment: Alignment.bottomLeft,
+                decoration: const BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [Colors.red, Colors.orange],
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                  ),
+                ),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        "Christina Fashions & Cosmetics",
+                        style: const TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                        maxLines: 2,
+                        softWrap: true,
                       ),
                     ),
-                    child: Wrap(
+                    Stack(
+                      clipBehavior: Clip.none,
                       children: [
-                        Row(
-                          children: [
-                            Expanded(
+                        IconButton(
+                          onPressed: () {},
+                          icon: const Icon(
+                            Icons.shopping_cart,
+                            color: Colors.white,
+                            size: 26,
+                          ),
+                        ),
+                        Positioned(
+                          right: 4,
+                          top: -2,
+                          child: Container(
+                            padding: const EdgeInsets.all(4),
+                            decoration: BoxDecoration(
+                              color: Colors.red,
+                              shape: BoxShape.circle,
+                              border: Border.all(color: Colors.white, width: 2),
+                            ),
+                            constraints: const BoxConstraints(
+                              minWidth: 22,
+                              minHeight: 22,
+                            ),
+                            child: const Center(
                               child: Text(
-                                "Christina Fashions",
+                                '5',
                                 style: TextStyle(
-                                  fontSize: 24,
-                                  fontWeight: FontWeight.bold,
                                   color: Colors.white,
-                                  // Remove overflow property
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.bold,
                                 ),
-                                maxLines: 2, // or remove for unlimited lines
-                                softWrap: true,
                               ),
                             ),
-                            // IconButton(
-                            //   onPressed: () {},
-                            //   icon: Icon(
-                            //     Icons.shopping_cart,
-                            //     color: Colors.white,
-                            //   ),
-                            // ),
-                            Stack(
-                              clipBehavior:
-                                  Clip.none, // Ensures badge can overflow if needed
-                              children: [
-                                IconButton(
-                                  onPressed: () {},
-                                  icon: Icon(
-                                    Icons.shopping_cart,
-                                    color: Colors.white,
-                                    size: 26,
-                                  ),
-                                ),
-                                Positioned(
-                                  // Adjust these values to perfectly overlap the icon
-                                  right: 4,
-                                  top: -2,
-                                  child: Container(
-                                    padding: const EdgeInsets.all(4),
-                                    decoration: BoxDecoration(
-                                      color: Colors.red,
-                                      shape: BoxShape.circle,
-                                      border: Border.all(
-                                        color: Colors.white,
-                                        width: 2,
-                                      ),
-                                    ),
-                                    constraints: const BoxConstraints(
-                                      minWidth: 22,
-                                      minHeight: 22,
-                                    ),
-                                    child: const Center(
-                                      child: Text(
-                                        '8',
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
+                          ),
                         ),
                       ],
                     ),
-                  ),
-                );
-              },
+                  ],
+                ),
+              ),
             ),
             bottom: PreferredSize(
               preferredSize: const Size.fromHeight(60),
               child: Padding(
                 padding: const EdgeInsets.symmetric(
-                  horizontal: 16.0,
+                  horizontal: 8.0,
                   vertical: 8.0,
                 ),
                 child: Container(
@@ -182,11 +150,9 @@ class ShopUi extends StatelessWidget {
               ),
             ),
           ),
-
-          // Main content remains the same
           SliverToBoxAdapter(
             child: Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding: const EdgeInsets.all(8.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -195,7 +161,7 @@ class ShopUi extends StatelessWidget {
                     height: 150,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(12.0),
-                      image: DecorationImage(
+                      image: const DecorationImage(
                         image: AssetImage(Assets.product1),
                         fit: BoxFit.cover,
                       ),
@@ -204,7 +170,7 @@ class ShopUi extends StatelessWidget {
                       children: [
                         const Positioned(
                           top: 16,
-                          left: 16,
+                          left: 8,
                           child: Text(
                             '50% OFF',
                             style: TextStyle(
@@ -216,7 +182,7 @@ class ShopUi extends StatelessWidget {
                         ),
                         Positioned(
                           bottom: 16,
-                          right: 16,
+                          right: 8,
                           child: ElevatedButton(
                             onPressed: () {},
                             style: ElevatedButton.styleFrom(
@@ -234,7 +200,7 @@ class ShopUi extends StatelessWidget {
                       ],
                     ),
                   ),
-                  const SizedBox(height: 16.0),
+                  const SizedBox(height: 8.0),
                   // Brands Section
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -260,15 +226,15 @@ class ShopUi extends StatelessWidget {
                     child: ListView(
                       scrollDirection: Axis.horizontal,
                       children: const [
-                        _BrandLogo(assetPath: Assets.product1),
+                        _BrandLogo(assetPath: Assets.trademateLogo),
                         _BrandLogo(assetPath: Assets.product2),
-                        _BrandLogo(assetPath: Assets.product3),
+                        _BrandLogo(assetPath: Assets.trademateLogo),
                         _BrandLogo(assetPath: Assets.product4),
                         _BrandLogo(assetPath: Assets.product1),
                       ],
                     ),
                   ),
-                  const SizedBox(height: 16.0),
+                  const SizedBox(height: 8.0),
                   // Men's Shoes Section
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -289,7 +255,6 @@ class ShopUi extends StatelessWidget {
                       ),
                     ],
                   ),
-                  // Horizontal Scrolling
                   SizedBox(
                     height: 280,
                     child: ListView(
@@ -303,7 +268,7 @@ class ShopUi extends StatelessWidget {
                           colors: 5,
                           price: 250000,
                         ),
-                        SizedBox(width: 16),
+                        SizedBox(width: 8),
                         ShoeCard(
                           image: Assets.product2,
                           title: 'Dr. Martens',
@@ -311,7 +276,7 @@ class ShopUi extends StatelessWidget {
                           colors: 8,
                           price: 130500,
                         ),
-                        SizedBox(width: 16),
+                        SizedBox(width: 8),
                         ShoeCard(
                           image: Assets.product3,
                           title: 'Sneakers',
@@ -322,7 +287,7 @@ class ShopUi extends StatelessWidget {
                       ],
                     ),
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 8),
                   // Women's Shoes Section
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -343,7 +308,7 @@ class ShopUi extends StatelessWidget {
                       ),
                     ],
                   ),
-                  // Horizontal Scrolling
+                  const SizedBox(height: 8),
                   SizedBox(
                     height: 280,
                     child: ListView(
@@ -353,30 +318,29 @@ class ShopUi extends StatelessWidget {
                         ShoeCard(
                           image: Assets.product1,
                           title: 'Pure Decent',
-                          rating: 5,
-                          colors: 5,
-                          price: 250000,
+                          rating: 2,
+                          colors: 6,
+                          price: 10000,
                         ),
-                        SizedBox(width: 16),
+                        SizedBox(width: 8),
                         ShoeCard(
                           image: Assets.product2,
                           title: 'Dr. Martens',
-                          rating: 5,
+                          rating: 4,
                           colors: 8,
-                          price: 130500,
+                          price: 30000,
                         ),
-                        SizedBox(width: 16),
+                        SizedBox(width: 8),
                         ShoeCard(
                           image: Assets.product3,
                           title: 'Sneakers',
                           rating: 3,
                           colors: 4,
-                          price: 50000,
+                          price: 11000,
                         ),
                       ],
                     ),
                   ),
-                  const SizedBox(height: 16),
                   // Kitchen's Utils Section
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -410,7 +374,7 @@ class ShopUi extends StatelessWidget {
                           colors: 5,
                           price: 250000,
                         ),
-                        SizedBox(width: 16),
+                        SizedBox(width: 8),
                         ShoeCard(
                           image: Assets.product2,
                           title: 'Dr. Martens',
@@ -418,7 +382,7 @@ class ShopUi extends StatelessWidget {
                           colors: 8,
                           price: 130500,
                         ),
-                        SizedBox(width: 16),
+                        SizedBox(width: 8),
                         ShoeCard(
                           image: Assets.product3,
                           title: 'Sneakers',
@@ -429,15 +393,13 @@ class ShopUi extends StatelessWidget {
                       ],
                     ),
                   ),
-                  SizedBox(height: 16),
-                  Center(
+                  const SizedBox(height: 8),
+                  const Center(
                     child: Text(
-                      "You're all catched up 👍!",
+                      "You're all caught up 👍!",
                       style: TextStyle(
-                        fontSize: 18,
                         fontWeight: FontWeight.bold,
-                        fontStyle: FontStyle.italic,
-                        //decoration: TextDecoration.underline,
+                        // fontStyle: FontStyle.italic,
                       ),
                     ),
                   ),
@@ -447,10 +409,19 @@ class ShopUi extends StatelessWidget {
           ),
         ],
       ),
+      floatingActionButton: ClassFloatingActionButton(
+        icon: Icons.add,
+        backgroundColor: Colors.red[400]!,
+        iconColor: Colors.white,
+        onPressed: () {
+          // Action for the floating action button
+          print("Floating Action Button Pressed");
+        },
+        tooltip: 'Add Product',
+      ),
     );
   }
 }
-
 ////
 
 //////
@@ -608,6 +579,99 @@ class ShoeCard extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+// floating action button
+
+class ClassFloatingActionButton extends StatefulWidget {
+  final IconData icon;
+  final Color backgroundColor;
+  final Color iconColor;
+  final VoidCallback onPressed;
+  final double size;
+  final String? tooltip;
+
+  const ClassFloatingActionButton({
+    Key? key,
+    required this.icon,
+    this.backgroundColor = const Color(0xFF1DA1F2),
+    this.iconColor = Colors.white,
+    required this.onPressed,
+    this.size = 56.0,
+    this.tooltip,
+  }) : super(key: key);
+
+  @override
+  _ClassFloatingActionButtonState createState() =>
+      _ClassFloatingActionButtonState();
+}
+
+class _ClassFloatingActionButtonState extends State<ClassFloatingActionButton>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _scaleAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      duration: const Duration(milliseconds: 100),
+      vsync: this,
+    );
+    _scaleAnimation = Tween<double>(
+      begin: 1.0,
+      end: 0.9,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut));
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTapDown: (_) => _controller.forward(),
+      onTapUp: (_) {
+        _controller.reverse();
+        widget.onPressed();
+      },
+      onTapCancel: () => _controller.reverse(),
+      child: ScaleTransition(
+        scale: _scaleAnimation,
+        child: Material(
+          elevation: 6.0,
+          shape: const CircleBorder(),
+          child: Container(
+            width: widget.size,
+            height: widget.size,
+            decoration: BoxDecoration(
+              color: widget.backgroundColor,
+              shape: BoxShape.circle,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.2),
+                  blurRadius: 8,
+                  offset: const Offset(0, 2),
+                ),
+              ],
+            ),
+            child: IconButton(
+              icon: Icon(
+                widget.icon,
+                color: widget.iconColor,
+                size: widget.size * 0.5,
+              ),
+              tooltip: widget.tooltip,
+              onPressed: () {},
+            ),
+          ),
+        ),
       ),
     );
   }
