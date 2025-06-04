@@ -1,6 +1,7 @@
 import 'package:business_app/components/customer_profiles/customer_dashboard.dart';
 import 'package:business_app/const/assets.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 
 // Shop UI Page
 
@@ -409,21 +410,161 @@ class ShopUi extends StatelessWidget {
           ),
         ],
       ),
-      floatingActionButton: ClassFloatingActionButton(
-        icon: Icons.add,
-        backgroundColor: Colors.red[400]!,
-        iconColor: Colors.white,
-        onPressed: () {
-          // Action for the floating action button
-          print("Floating Action Button Pressed");
-        },
-        tooltip: 'Add Product',
+      floatingActionButton: const TwitterFab(),
+    );
+  }
+}
+
+// floating action button
+class TwitterFab extends StatelessWidget {
+  const TwitterFab({super.key});
+
+  void _openComposeSheet(BuildContext context) {
+    showGeneralDialog(
+      context: context,
+      barrierDismissible: true,
+      barrierLabel: "Compose",
+      pageBuilder: (_, __, ___) => const SizedBox.shrink(),
+      transitionBuilder: (_, animation, __, child) {
+        return Transform.scale(
+          scale: animation.value,
+          child: Opacity(
+            opacity: animation.value,
+            child: const ComposeTweetOverlay(),
+          ),
+        );
+      },
+      transitionDuration: const Duration(milliseconds: 300),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FloatingActionButton(
+      onPressed: () => _openComposeSheet(context),
+      backgroundColor: Colors.blue,
+      shape: const CircleBorder(),
+      elevation: 8,
+      child: const Icon(Icons.edit, color: Colors.white),
+    );
+  }
+}
+
+//for adding a compose tweet overlay
+
+class ComposeTweetOverlay extends StatelessWidget {
+  const ComposeTweetOverlay({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: Colors.black.withOpacity(0.6),
+      child: Center(
+        child: Container(
+              margin: const EdgeInsets.all(20),
+              padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 20),
+              width: double.infinity,
+              constraints: const BoxConstraints(maxWidth: 500),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(24),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.1),
+                    blurRadius: 20,
+                    offset: const Offset(0, 10),
+                  ),
+                ],
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Close icon on top right
+                  Align(
+                    alignment: Alignment.topRight,
+                    child: GestureDetector(
+                      onTap: () => Navigator.of(context).pop(),
+                      child: Container(
+                        padding: const EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Colors.grey[200],
+                        ),
+                        child: const Icon(Icons.close, size: 20),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+
+                  // Header
+                  const Text(
+                    "Compose Special Oder",
+                    style: TextStyle(
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black87,
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+
+                  // Text field
+                  TextField(
+                    maxLines: 5,
+                    minLines: 3,
+                    decoration: InputDecoration(
+                      hintText: "What special order would you like to make?",
+                      hintMaxLines: 2,
+                      hintStyle: const TextStyle(color: Colors.grey),
+                      filled: true,
+                      fillColor: Colors.grey[100],
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(16),
+                        borderSide: BorderSide.none,
+                      ),
+                      contentPadding: const EdgeInsets.symmetric(
+                        vertical: 14,
+                        horizontal: 16,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+
+                  // Tweet button
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton.icon(
+                      onPressed: () {
+                        Navigator.of(context).pop(); // Or handle tweet logic
+                      },
+                      icon: const Icon(Icons.send),
+                      label: const Text("Send Special Order"),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.blue,
+                        foregroundColor: Colors.white,
+                        padding: const EdgeInsets.symmetric(vertical: 14),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        textStyle: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            )
+            .animate()
+            .scale(duration: 300.ms, curve: Curves.easeOutBack)
+            .fadeIn(duration: 300.ms),
       ),
     );
   }
 }
-////
 
+// FAB code ends here
 //////
 class _BrandLogo extends StatelessWidget {
   final String assetPath;
