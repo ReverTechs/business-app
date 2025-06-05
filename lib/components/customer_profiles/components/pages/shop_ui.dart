@@ -84,44 +84,57 @@ class ShopUi extends StatelessWidget {
                         softWrap: true,
                       ),
                     ),
-                    Stack(
-                      clipBehavior: Clip.none,
-                      children: [
-                        IconButton(
-                          onPressed: () {},
-                          icon: const Icon(
-                            Icons.shopping_cart,
-                            color: Colors.white,
-                            size: 26,
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const CartScreen(),
                           ),
-                        ),
-                        Positioned(
-                          right: 4,
-                          top: -2,
-                          child: Container(
-                            padding: const EdgeInsets.all(4),
-                            decoration: BoxDecoration(
-                              color: Colors.red,
-                              shape: BoxShape.circle,
-                              border: Border.all(color: Colors.white, width: 2),
+                        );
+                      },
+                      child: Stack(
+                        clipBehavior: Clip.none,
+                        children: [
+                          IconButton(
+                            onPressed: () {},
+                            icon: const Icon(
+                              Icons.shopping_cart,
+                              color: Colors.white,
+                              size: 26,
                             ),
-                            constraints: const BoxConstraints(
-                              minWidth: 22,
-                              minHeight: 22,
-                            ),
-                            child: const Center(
-                              child: Text(
-                                '5',
-                                style: TextStyle(
+                          ),
+                          Positioned(
+                            right: 4,
+                            top: -2,
+                            child: Container(
+                              padding: const EdgeInsets.all(4),
+                              decoration: BoxDecoration(
+                                color: Colors.red,
+                                shape: BoxShape.circle,
+                                border: Border.all(
                                   color: Colors.white,
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.bold,
+                                  width: 2,
+                                ),
+                              ),
+                              constraints: const BoxConstraints(
+                                minWidth: 22,
+                                minHeight: 22,
+                              ),
+                              child: const Center(
+                                child: Text(
+                                  '5',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
                               ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ],
                 ),
@@ -394,7 +407,7 @@ class ShopUi extends StatelessWidget {
                       ],
                     ),
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: 32),
                   const Center(
                     child: Text(
                       "You're all caught up 👍!",
@@ -817,3 +830,314 @@ class _ClassFloatingActionButtonState extends State<ClassFloatingActionButton>
     );
   }
 }
+
+//cart page UI ------------------
+// Cart Page UI
+class CartScreen extends StatefulWidget {
+  const CartScreen({super.key});
+
+  @override
+  _CartScreenState createState() => _CartScreenState();
+}
+
+class _CartScreenState extends State<CartScreen> {
+  // Sample cart items
+  final List<CartItem> cartItems = [
+    CartItem(
+      id: 1,
+      name: 'Wireless Headphones',
+      price: 79.99,
+      imageUrl: Assets.product3, //'https://via.placeholder.com/100',
+      quantity: 1,
+    ),
+    CartItem(
+      id: 2,
+      name: 'Smartwatch',
+      price: 199.99,
+      imageUrl: Assets.product3, //'https://via.placeholder.com/100',
+      quantity: 2,
+    ),
+    CartItem(
+      id: 3,
+      name: 'Dr Martens Boots',
+      price: 80.66,
+      imageUrl: Assets.product3, //'https://via.placeholder.com/100',
+      quantity: 3,
+    ),
+  ];
+
+  void updateQuantity(int id, int newQuantity) {
+    setState(() {
+      if (newQuantity <= 0) {
+        cartItems.removeWhere((item) => item.id == id);
+      } else {
+        final item = cartItems.firstWhere((item) => item.id == id);
+        item.quantity = newQuantity;
+      }
+    });
+  }
+
+  double get subtotal =>
+      cartItems.fold(0, (sum, item) => sum + item.price * item.quantity);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Your Cart'),
+        centerTitle: true,
+        // backgroundColor: Colors.white,
+        elevation: 0,
+        // foregroundColor: Colors.black,
+      ),
+      body:
+          cartItems.isEmpty
+              ? const Center(
+                child: Text(
+                  'Your cart is empty!',
+                  style: TextStyle(fontSize: 18, color: Colors.grey),
+                ),
+              )
+              : Column(
+                children: [
+                  Expanded(
+                    child: ListView.builder(
+                      padding: const EdgeInsets.all(16),
+                      itemCount: cartItems.length,
+                      itemBuilder: (context, index) {
+                        final item = cartItems[index];
+                        return CartItemWidget(
+                          item: item,
+                          onQuantityChanged:
+                              (newQuantity) =>
+                                  updateQuantity(item.id, newQuantity),
+                        );
+                      },
+                    ),
+                  ),
+                  _buildSummarySection(context),
+                ],
+              ),
+    );
+  }
+
+  Widget _buildSummarySection(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        //color: Colors.white,
+        // boxShadow: [
+        //   BoxShadow(
+        //     // color: Colors.grey.withOpacity(0.1),
+        //     blurRadius: 10,
+        //     offset: const Offset(0, -2),
+        //   ),
+        //],
+      ),
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text(
+                'Subtotal',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+              ),
+              Text(
+                '\$${subtotal.toStringAsFixed(2)}',
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 8),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text(
+                'Shipping',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+              ),
+              Text(
+                cartItems.isEmpty ? '\$0.00' : '\$10.00',
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
+          const Divider(height: 24),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text(
+                'Total',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+              Text(
+                '\$${(subtotal + (cartItems.isEmpty ? 0 : 10.0)).toStringAsFixed(2)}',
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.blue,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+          SizedBox(
+            width: double.infinity,
+            child: ElevatedButton(
+              onPressed:
+                  cartItems.isEmpty
+                      ? null
+                      : () {
+                        // Handle checkout action
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Proceeding to checkout...'),
+                          ),
+                        );
+                      },
+              style: ElevatedButton.styleFrom(
+                padding: const EdgeInsets.symmetric(vertical: 16),
+                backgroundColor: Colors.blue,
+                foregroundColor: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+              child: const Text(
+                'Checkout',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class CartItem {
+  final int id;
+  final String name;
+  final double price;
+  final String imageUrl;
+  int quantity;
+
+  CartItem({
+    required this.id,
+    required this.name,
+    required this.price,
+    required this.imageUrl,
+    required this.quantity,
+  });
+}
+
+class CartItemWidget extends StatelessWidget {
+  final CartItem item;
+  final Function(int) onQuantityChanged;
+
+  const CartItemWidget({
+    super.key,
+    required this.item,
+    required this.onQuantityChanged,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Dismissible(
+      key: Key(item.id.toString()),
+      direction: DismissDirection.endToStart,
+      onDismissed: (_) => onQuantityChanged(0),
+      background: Container(
+        color: Colors.red,
+        alignment: Alignment.centerRight,
+        padding: const EdgeInsets.only(right: 16),
+        child: const Icon(Icons.delete, color: Colors.white),
+      ),
+      child: Card(
+        margin: const EdgeInsets.symmetric(vertical: 8),
+        elevation: 2,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        child: Padding(
+          padding: const EdgeInsets.all(12),
+          child: Row(
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: Image.network(
+                  item.imageUrl,
+                  width: 80,
+                  height: 80,
+                  fit: BoxFit.cover,
+                  errorBuilder: (_, __, ___) => const Icon(Icons.error),
+                ),
+              ),
+              const SizedBox(width: 16),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      item.name,
+                      style: Theme.of(context).textTheme.bodyLarge,
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      '\$${item.price.toStringAsFixed(2)}',
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                  ],
+                ),
+              ),
+              QuantitySelector(
+                quantity: item.quantity,
+                onChanged: (newQuantity) => onQuantityChanged(newQuantity),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class QuantitySelector extends StatelessWidget {
+  final int quantity;
+  final Function(int) onChanged;
+
+  const QuantitySelector({
+    super.key,
+    required this.quantity,
+    required this.onChanged,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        IconButton(
+          onPressed: () => onChanged(quantity - 1),
+          icon: const Icon(Icons.remove_circle_outline),
+          color: Colors.grey,
+        ),
+        Text(
+          quantity.toString(),
+          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+        ),
+        IconButton(
+          onPressed: () => onChanged(quantity + 1),
+          icon: const Icon(Icons.add_circle_outline),
+          color: Colors.grey,
+        ),
+      ],
+    );
+  }
+}
+
+//cart page UI ends here
