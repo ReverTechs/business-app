@@ -84,57 +84,44 @@ class ShopUi extends StatelessWidget {
                         softWrap: true,
                       ),
                     ),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const CartScreen(),
+                    Stack(
+                      clipBehavior: Clip.none,
+                      children: [
+                        IconButton(
+                          onPressed: () {},
+                          icon: const Icon(
+                            Icons.shopping_cart,
+                            color: Colors.white,
+                            size: 26,
                           ),
-                        );
-                      },
-                      child: Stack(
-                        clipBehavior: Clip.none,
-                        children: [
-                          IconButton(
-                            onPressed: () {},
-                            icon: const Icon(
-                              Icons.shopping_cart,
-                              color: Colors.white,
-                              size: 26,
+                        ),
+                        Positioned(
+                          right: 4,
+                          top: -2,
+                          child: Container(
+                            padding: const EdgeInsets.all(4),
+                            decoration: BoxDecoration(
+                              color: Colors.red,
+                              shape: BoxShape.circle,
+                              border: Border.all(color: Colors.white, width: 2),
                             ),
-                          ),
-                          Positioned(
-                            right: 4,
-                            top: -2,
-                            child: Container(
-                              padding: const EdgeInsets.all(4),
-                              decoration: BoxDecoration(
-                                color: Colors.red,
-                                shape: BoxShape.circle,
-                                border: Border.all(
+                            constraints: const BoxConstraints(
+                              minWidth: 22,
+                              minHeight: 22,
+                            ),
+                            child: const Center(
+                              child: Text(
+                                '3',
+                                style: TextStyle(
                                   color: Colors.white,
-                                  width: 2,
-                                ),
-                              ),
-                              constraints: const BoxConstraints(
-                                minWidth: 22,
-                                minHeight: 22,
-                              ),
-                              child: const Center(
-                                child: Text(
-                                  '5',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.bold,
                                 ),
                               ),
                             ),
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
