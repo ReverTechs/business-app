@@ -238,7 +238,7 @@ class _CustomerDashboardState extends State<CustomerDashboard>
                                         Column(
                                           children: [
                                             Text(
-                                              "10,31M",
+                                              "13.8M",
                                               style: TextStyle(
                                                 fontSize: 16,
                                                 fontWeight: FontWeight.bold,

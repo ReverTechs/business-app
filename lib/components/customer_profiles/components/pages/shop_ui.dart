@@ -1,416 +1,505 @@
 import 'package:business_app/components/customer_profiles/customer_dashboard.dart';
 import 'package:business_app/const/assets.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
 // Shop UI Page
 
 class ShopUi extends StatelessWidget {
-  final String username = "Christina";
+  final String username = "Blessings";
   const ShopUi({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: CustomScrollView(
-        physics: const BouncingScrollPhysics(),
-        slivers: [
-          SliverAppBar(
-            pinned: true,
-            expandedHeight: 160,
-            elevation: 0,
-            leading: Padding(
-              padding: const EdgeInsets.only(left: 8.0),
-              child: Container(
-                width: 40,
-                height: 40,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  gradient: RadialGradient(
-                    colors: [
-                      Colors.black.withOpacity(0.5),
-                      Colors.black.withOpacity(0.1),
-                    ],
-                    stops: const [0.4, 1.0],
-                    center: Alignment.center,
-                    radius: 1.0,
-                  ),
-                ),
-                child: IconButton(
-                  icon: const Icon(Icons.arrow_back, color: Colors.white),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => CustomerDashboard(),
-                      ),
-                    );
-                  },
-                ),
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(150.0),
+        child: AppBar(
+          automaticallyImplyLeading: false,
+          elevation: 0,
+          flexibleSpace: Container(
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                colors: [Colors.red, Colors.orange],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
               ),
             ),
-            flexibleSpace: FlexibleSpaceBar(
-              centerTitle: false,
-              titlePadding: const EdgeInsets.only(left: 8.0, bottom: 16.0),
-              title: Text(
-                "Hello, $username",
-                style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  //color: Colors.grey,
+            child: SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.only(
+                  left: 8.0,
+                  right: 8.0,
+                  top: 8.0,
+                  bottom: 0,
                 ),
-              ),
-              background: Container(
-                padding: const EdgeInsets.only(left: 8.0, bottom: 60.0),
-                alignment: Alignment.bottomLeft,
-                decoration: const BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [Colors.red, Colors.orange],
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                  ),
-                ),
-                child: Row(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Expanded(
-                      child: Text(
-                        "Christina Fashions & Cosmetics",
-                        style: const TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
-                        maxLines: 2,
-                        softWrap: true,
-                      ),
-                    ),
-                    Stack(
-                      clipBehavior: Clip.none,
+                    // Top Row: Back button and cart
+                    Row(
                       children: [
-                        IconButton(
-                          onPressed: () {},
-                          icon: const Icon(
-                            Icons.shopping_cart,
-                            color: Colors.white,
-                            size: 26,
-                          ),
-                        ),
-                        Positioned(
-                          right: 4,
-                          top: -2,
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => CustomerDashboard(),
+                              ),
+                            );
+                          },
                           child: Container(
-                            padding: const EdgeInsets.all(4),
+                            width: 30,
+                            height: 30,
                             decoration: BoxDecoration(
-                              color: Colors.red,
                               shape: BoxShape.circle,
-                              border: Border.all(color: Colors.white, width: 2),
+                              gradient: RadialGradient(
+                                colors: [
+                                  Colors.black.withOpacity(0.5),
+                                  Colors.black.withOpacity(0.1),
+                                ],
+                                stops: const [0.4, 1.0],
+                                center: Alignment.center,
+                                radius: 1.0,
+                              ),
                             ),
-                            constraints: const BoxConstraints(
-                              minWidth: 22,
-                              minHeight: 22,
-                            ),
-                            child: const Center(
-                              child: Text(
-                                '3',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                            child: ClipOval(
+                              child: Image.network(
+                                'https://cdni.pornpics.com/1280/7/725/40669812/40669812_034_2bed.jpg', // Replace with your image URL
+                                width: 30.0,
+                                height: 30.0,
+                                fit: BoxFit.cover,
                               ),
                             ),
                           ),
                         ),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: Text(
+                            "Christina Fashions & Cosmetics",
+                            style: const TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
+                            maxLines: 2,
+                            softWrap: true,
+                          ),
+                        ),
+                        Stack(
+                          clipBehavior: Clip.none,
+                          children: [
+                            IconButton(
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const CartScreen(),
+                                  ),
+                                );
+                              },
+                              icon: const Icon(
+                                Icons.shopping_cart,
+                                color: Colors.blue,
+                                size: 26,
+                              ),
+                            ),
+                            Positioned(
+                              right: 4,
+                              top: -2,
+                              child: GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => const CartScreen(),
+                                    ),
+                                  );
+                                },
+                                child: Container(
+                                  padding: const EdgeInsets.all(4),
+                                  decoration: BoxDecoration(
+                                    color: Colors.red,
+                                    shape: BoxShape.circle,
+                                    border: Border.all(
+                                      color: Colors.white,
+                                      width: 2,
+                                    ),
+                                  ),
+                                  constraints: const BoxConstraints(
+                                    minWidth: 22,
+                                    minHeight: 22,
+                                  ),
+                                  child: const Center(
+                                    child: Text(
+                                      '3',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                       ],
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      "Good moaning, $username",
+                      style: const TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white70,
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    // Search bar
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white30,
+                        borderRadius: BorderRadius.circular(32.0),
+                      ),
+                      child: const TextField(
+                        decoration: InputDecoration(
+                          hintText: 'Search products',
+                          prefixIcon: Icon(Icons.search),
+                          border: InputBorder.none,
+                          suffixIcon: Icon(Icons.filter_list),
+                        ),
+                      ),
                     ),
                   ],
                 ),
               ),
             ),
-            bottom: PreferredSize(
-              preferredSize: const Size.fromHeight(60),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 8.0,
-                  vertical: 8.0,
-                ),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.grey[200],
-                    borderRadius: BorderRadius.circular(8.0),
-                  ),
-                  child: const TextField(
-                    decoration: InputDecoration(
-                      hintText: 'Search products',
-                      prefixIcon: Icon(Icons.search),
-                      border: InputBorder.none,
-                      suffixIcon: Icon(Icons.filter_list),
-                    ),
-                  ),
-                ),
-              ),
-            ),
           ),
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Banner with Discount
-                  Container(
-                    height: 150,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12.0),
-                      image: const DecorationImage(
-                        image: AssetImage(Assets.product1),
-                        fit: BoxFit.cover,
-                      ),
+        ),
+      ),
+      body: ListView(
+        physics: const BouncingScrollPhysics(),
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Banner with Discount
+                Container(
+                  height: 150,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12.0),
+                    image: const DecorationImage(
+                      image: AssetImage(Assets.product1),
+                      fit: BoxFit.cover,
                     ),
-                    child: Stack(
-                      children: [
-                        const Positioned(
-                          top: 16,
-                          left: 8,
-                          child: Text(
-                            '50% OFF',
-                            style: TextStyle(
-                              color: Colors.red,
-                              fontSize: 32,
-                              fontWeight: FontWeight.bold,
-                            ),
+                  ),
+                  child: Stack(
+                    children: [
+                      const Positioned(
+                        top: 16,
+                        left: 8,
+                        child: Text(
+                          '50% OFF',
+                          style: TextStyle(
+                            color: Colors.red,
+                            fontSize: 32,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
-                        Positioned(
-                          bottom: 16,
-                          right: 8,
-                          child: ElevatedButton(
-                            onPressed: () {},
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.red,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20.0),
-                              ),
-                            ),
-                            child: const Text(
-                              'Shop now',
-                              style: TextStyle(color: Colors.white),
+                      ),
+                      Positioned(
+                        bottom: 16,
+                        right: 8,
+                        child: ElevatedButton(
+                          onPressed: () {},
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.red,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20.0),
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 8.0),
-                  // Brands Section
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text(
-                        'Popular brands',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      TextButton(
-                        onPressed: () {},
-                        child: const Text(
-                          'See all',
-                          style: TextStyle(color: Colors.grey, fontSize: 14),
+                          child: const Text(
+                            'Shop now',
+                            style: TextStyle(color: Colors.white),
+                          ),
                         ),
                       ),
                     ],
                   ),
-                  SizedBox(
-                    height: 80,
-                    child: ListView(
-                      scrollDirection: Axis.horizontal,
-                      children: const [
-                        _BrandLogo(assetPath: Assets.trademateLogo),
-                        _BrandLogo(assetPath: Assets.product2),
-                        _BrandLogo(assetPath: Assets.trademateLogo),
-                        _BrandLogo(assetPath: Assets.product4),
-                        _BrandLogo(assetPath: Assets.product1),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 8.0),
-                  // Men's Shoes Section
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text(
-                        "Men's Shoes",
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      TextButton(
-                        onPressed: () {},
-                        child: const Text(
-                          'See all',
-                          style: TextStyle(color: Colors.grey, fontSize: 14),
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 280,
-                    child: ListView(
-                      scrollDirection: Axis.horizontal,
-                      physics: const BouncingScrollPhysics(),
-                      children: const [
-                        ShoeCard(
-                          image: Assets.product1,
-                          title: 'Pure Decent',
-                          rating: 5,
-                          colors: 5,
-                          price: 250000,
-                        ),
-                        SizedBox(width: 8),
-                        ShoeCard(
-                          image: Assets.product2,
-                          title: 'Dr. Martens',
-                          rating: 5,
-                          colors: 8,
-                          price: 130500,
-                        ),
-                        SizedBox(width: 8),
-                        ShoeCard(
-                          image: Assets.product3,
-                          title: 'Sneakers',
-                          rating: 3,
-                          colors: 4,
-                          price: 50000,
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  // Women's Shoes Section
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text(
-                        "Women's Shoes",
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      TextButton(
-                        onPressed: () {},
-                        child: const Text(
-                          'See all',
-                          style: TextStyle(color: Colors.grey, fontSize: 14),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 8),
-                  SizedBox(
-                    height: 280,
-                    child: ListView(
-                      scrollDirection: Axis.horizontal,
-                      physics: const BouncingScrollPhysics(),
-                      children: const [
-                        ShoeCard(
-                          image: Assets.product1,
-                          title: 'Pure Decent',
-                          rating: 2,
-                          colors: 6,
-                          price: 10000,
-                        ),
-                        SizedBox(width: 8),
-                        ShoeCard(
-                          image: Assets.product2,
-                          title: 'Dr. Martens',
-                          rating: 4,
-                          colors: 8,
-                          price: 30000,
-                        ),
-                        SizedBox(width: 8),
-                        ShoeCard(
-                          image: Assets.product3,
-                          title: 'Sneakers',
-                          rating: 3,
-                          colors: 4,
-                          price: 11000,
-                        ),
-                      ],
-                    ),
-                  ),
-                  // Kitchen's Utils Section
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text(
-                        "Kitchen Utils",
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      TextButton(
-                        onPressed: () {},
-                        child: const Text(
-                          'See all',
-                          style: TextStyle(color: Colors.grey, fontSize: 14),
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 280,
-                    child: ListView(
-                      scrollDirection: Axis.horizontal,
-                      physics: const BouncingScrollPhysics(),
-                      children: const [
-                        ShoeCard(
-                          image: Assets.product1,
-                          title: 'Pure Decent',
-                          rating: 5,
-                          colors: 5,
-                          price: 250000,
-                        ),
-                        SizedBox(width: 8),
-                        ShoeCard(
-                          image: Assets.product2,
-                          title: 'Dr. Martens',
-                          rating: 5,
-                          colors: 8,
-                          price: 130500,
-                        ),
-                        SizedBox(width: 8),
-                        ShoeCard(
-                          image: Assets.product3,
-                          title: 'Sneakers',
-                          rating: 3,
-                          colors: 4,
-                          price: 50000,
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 32),
-                  const Center(
-                    child: Text(
-                      "You're all caught up 👍!",
+                ),
+                const SizedBox(height: 8.0),
+                // Brands Section
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      'Popular brands',
                       style: TextStyle(
+                        fontSize: 18,
                         fontWeight: FontWeight.bold,
-                        // fontStyle: FontStyle.italic,
                       ),
                     ),
+                    TextButton(
+                      onPressed: () {},
+                      child: const Text(
+                        'See all',
+                        style: TextStyle(color: Colors.grey, fontSize: 14),
+                      ),
+                    ),
+                  ],
+                ),
+                const AutoScrollingBrandList(),
+                /* SizedBox(
+                  height: 60,
+                  child: ListView(
+                    scrollDirection: Axis.horizontal,
+                    children: const [
+                      _BrandLogo(assetPath: Assets.trademateLogo),
+                      _BrandLogo(assetPath: Assets.product2),
+                      _BrandLogo(assetPath: Assets.trademateLogo),
+                      _BrandLogo(assetPath: Assets.product4),
+                      _BrandLogo(assetPath: Assets.product1),
+                    ],
                   ),
-                ],
-              ),
+                ),*/
+                const SizedBox(height: 8.0),
+                // Men's Shoes Section
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      "Men's Shoes",
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    TextButton(
+                      onPressed: () {},
+                      child: const Text(
+                        'See all',
+                        style: TextStyle(color: Colors.grey, fontSize: 14),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 280,
+                  child: ListView(
+                    scrollDirection: Axis.horizontal,
+                    physics: const BouncingScrollPhysics(),
+                    children: const [
+                      ShoeCard(
+                        image: Assets.product1,
+                        title: 'Pure Decent',
+                        rating: 5,
+                        colors: 5,
+                        price: 250000,
+                      ),
+                      SizedBox(width: 8),
+                      ShoeCard(
+                        image: Assets.product2,
+                        title: 'Dr. Martens',
+                        rating: 5,
+                        colors: 8,
+                        price: 130500,
+                      ),
+                      SizedBox(width: 8),
+                      ShoeCard(
+                        image: Assets.product3,
+                        title: 'Sneakers',
+                        rating: 3,
+                        colors: 4,
+                        price: 50000,
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 8),
+                // Women's Shoes Section
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      "Women's Shoes",
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    TextButton(
+                      onPressed: () {},
+                      child: const Text(
+                        'See all',
+                        style: TextStyle(color: Colors.grey, fontSize: 14),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 8),
+                SizedBox(
+                  height: 280,
+                  child: ListView(
+                    scrollDirection: Axis.horizontal,
+                    physics: const BouncingScrollPhysics(),
+                    children: const [
+                      ShoeCard(
+                        image: Assets.product1,
+                        title: 'Pure Decent',
+                        rating: 2,
+                        colors: 6,
+                        price: 10000,
+                      ),
+                      SizedBox(width: 8),
+                      ShoeCard(
+                        image: Assets.product2,
+                        title: 'Dr. Martens',
+                        rating: 4,
+                        colors: 8,
+                        price: 30000,
+                      ),
+                      SizedBox(width: 8),
+                      ShoeCard(
+                        image: Assets.product3,
+                        title: 'Sneakers',
+                        rating: 3,
+                        colors: 4,
+                        price: 11000,
+                      ),
+                    ],
+                  ),
+                ),
+                // Kitchen's Utils Section
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      "Kitchen Utils",
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    TextButton(
+                      onPressed: () {},
+                      child: const Text(
+                        'See all',
+                        style: TextStyle(color: Colors.grey, fontSize: 14),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 280,
+                  child: ListView(
+                    scrollDirection: Axis.horizontal,
+                    physics: const BouncingScrollPhysics(),
+                    children: const [
+                      ShoeCard(
+                        image: Assets.product1,
+                        title: 'Pure Decent',
+                        rating: 5,
+                        colors: 5,
+                        price: 250000,
+                      ),
+                      SizedBox(width: 8),
+                      ShoeCard(
+                        image: Assets.product2,
+                        title: 'Dr. Martens',
+                        rating: 5,
+                        colors: 8,
+                        price: 130500,
+                      ),
+                      SizedBox(width: 8),
+                      ShoeCard(
+                        image: Assets.product3,
+                        title: 'Sneakers',
+                        rating: 3,
+                        colors: 4,
+                        price: 50000,
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 32),
+                const Center(
+                  child: Text(
+                    "You're all caught up 👍!",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      // fontStyle: FontStyle.italic,
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
         ],
       ),
       floatingActionButton: const TwitterFab(),
+    );
+  }
+}
+
+//class for auto scroll of brans list
+class AutoScrollingBrandList extends StatefulWidget {
+  const AutoScrollingBrandList({super.key});
+
+  @override
+  State<AutoScrollingBrandList> createState() => _AutoScrollingBrandListState();
+}
+
+class _AutoScrollingBrandListState extends State<AutoScrollingBrandList>
+    with SingleTickerProviderStateMixin {
+  late final ScrollController _controller;
+  late final Ticker _ticker;
+  double _scrollPosition = 0.0;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = ScrollController();
+    _ticker = createTicker(_onTick)..start();
+  }
+
+  void _onTick(Duration elapsed) {
+    if (!_controller.hasClients) return;
+    _scrollPosition += 0.3; // Adjust speed here
+    if (_scrollPosition > _controller.position.maxScrollExtent) {
+      _scrollPosition = 0;
+    }
+    _controller.jumpTo(_scrollPosition);
+  }
+
+  @override
+  void dispose() {
+    _ticker.dispose();
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 60,
+      child: ListView(
+        controller: _controller,
+        scrollDirection: Axis.horizontal,
+        children: const [
+          _BrandLogo(assetPath: Assets.product4),
+          _BrandLogo(assetPath: Assets.trademateLogo),
+          _BrandLogo(assetPath: Assets.product2),
+          _BrandLogo(assetPath: Assets.trademateLogo),
+          _BrandLogo(assetPath: Assets.product4),
+          _BrandLogo(assetPath: Assets.product1),
+          _BrandLogo(assetPath: Assets.product3),
+        ],
+      ),
     );
   }
 }
@@ -961,7 +1050,7 @@ class _CartScreenState extends State<CartScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               const Text(
-                'Total',
+                'Est. Total',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
               Text(
@@ -973,6 +1062,10 @@ class _CartScreenState extends State<CartScreen> {
                 ),
               ),
             ],
+          ),
+          Text(
+            "Business will provide total price! It will confirm your order and shipping details, including any tax, fees and discounts.",
+            style: TextStyle(fontSize: 12, color: Colors.grey[600]),
           ),
           const SizedBox(height: 16),
           SizedBox(
