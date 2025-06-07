@@ -297,16 +297,10 @@ class _CustomerDashboardState extends State<CustomerDashboard>
                                           ),
                                           SizedBox(width: 24),
                                           OutlinedButton(
-                                            //onPressed: () {},
                                             onPressed: () {
-                                              Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                  builder:
-                                                      (context) => ChatScreen(),
-                                                ),
-                                              );
+                                              messageBottomSheet(context);
                                             },
+
                                             style: OutlinedButton.styleFrom(
                                               side: BorderSide(
                                                 color: Colors.grey,
@@ -421,7 +415,7 @@ class _CustomerDashboardState extends State<CustomerDashboard>
                         ],
                       ),
                       Text(
-                        '@chri_lungu',
+                        '@chris_lungu',
                         style: TextStyle(color: Colors.grey, fontSize: 16),
                       ),
                     ],
@@ -626,4 +620,72 @@ class _SliverTabBarDelegate extends SliverPersistentHeaderDelegate {
   bool shouldRebuild(_SliverTabBarDelegate oldDelegate) {
     return tabBar != oldDelegate.tabBar;
   }
+}
+
+//message bottom sheet
+
+// Reusable function to show the custom bottom sheet
+void messageBottomSheet(BuildContext context) {
+  showModalBottomSheet(
+    context: context,
+    isScrollControlled: true,
+    //backgroundColor: Colors.white,
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.vertical(top: Radius.circular(20.0)),
+    ),
+    builder: (BuildContext context) {
+      return Container(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Center(
+              child: Container(
+                width: 40,
+                height: 5,
+                decoration: BoxDecoration(
+                  color: Colors.grey[300],
+                  borderRadius: BorderRadius.circular(2.5),
+                ),
+              ),
+            ),
+            const SizedBox(height: 20),
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ChatScreen()),
+                );
+              },
+              child: const Text(
+                'Direct Message',
+                style: TextStyle(fontSize: 16),
+              ),
+            ),
+            const SizedBox(height: 20),
+            const Text('Email', style: TextStyle(fontSize: 16)),
+            const SizedBox(height: 20),
+            Row(
+              children: [
+                Text('Visit', style: TextStyle(fontSize: 16)),
+                SizedBox(width: 8),
+                Expanded(
+                  child: Text(
+                    "www.chris-fashions.com",
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.blue,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 20),
+          ],
+        ),
+      );
+    },
+  );
 }

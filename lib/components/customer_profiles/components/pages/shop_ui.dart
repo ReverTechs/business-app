@@ -1,14 +1,59 @@
 import 'package:business_app/components/customer_profiles/customer_dashboard.dart';
 import 'package:business_app/const/assets.dart';
+import 'package:business_app/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
 
 // Shop UI Page
 
-class ShopUi extends StatelessWidget {
-  final String username = "Blessings";
+//greeting message function
+String getGreeting(String username) {
+  final hour = DateTime.now().hour;
+  if (hour < 12) {
+    return "Good morning, $username";
+  } else if (hour < 17) {
+    return "Good afternoon, $username";
+  } else {
+    return "Good evening, $username";
+  }
+}
+
+class ShopUi extends StatefulWidget {
   const ShopUi({Key? key}) : super(key: key);
+
+  @override
+  State<ShopUi> createState() => _ShopUiState();
+}
+
+class _ShopUiState extends State<ShopUi> {
+  final String username = "Blessings";
+
+  //greeting components
+  late String greeting;
+  late final Ticker _ticker;
+
+  @override
+  void initState() {
+    super.initState();
+    greeting = getGreeting(username);
+    _ticker = Ticker((_) {
+      final newGreeting = getGreeting(username);
+      if (newGreeting != greeting) {
+        setState(() {
+          greeting = newGreeting;
+        });
+      }
+    })..start();
+  }
+
+  @override
+  void dispose() {
+    _ticker.dispose();
+    super.dispose();
+  }
+  //greeting components end
 
   @override
   Widget build(BuildContext context) {
@@ -150,7 +195,7 @@ class ShopUi extends StatelessWidget {
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      "Good moaning, $username",
+                      greeting,
                       style: const TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.bold,
@@ -441,7 +486,8 @@ class ShopUi extends StatelessWidget {
           ),
         ],
       ),
-      floatingActionButton: const TwitterFab(),
+      floatingActionButtonLocation: ExpandableFab.location,
+      floatingActionButton: const CustomExpandableFab(),
     );
   }
 }
@@ -505,150 +551,120 @@ class _AutoScrollingBrandListState extends State<AutoScrollingBrandList>
 }
 
 // floating action button
-class TwitterFab extends StatelessWidget {
-  const TwitterFab({super.key});
 
-  void _openComposeSheet(BuildContext context) {
-    showGeneralDialog(
-      context: context,
-      barrierDismissible: true,
-      barrierLabel: "Compose",
-      pageBuilder: (_, __, ___) => const SizedBox.shrink(),
-      transitionBuilder: (_, animation, __, child) {
-        return Transform.scale(
-          scale: animation.value,
-          child: Opacity(
-            opacity: animation.value,
-            child: const ComposeTweetOverlay(),
-          ),
-        );
-      },
-      transitionDuration: const Duration(milliseconds: 300),
-    );
+class CustomExpandableFab extends StatelessWidget {
+  const CustomExpandableFab({super.key});
+
+  void _handleAction(String action) {
+    debugPrint('Action selected: $action');
   }
 
   @override
   Widget build(BuildContext context) {
-    return FloatingActionButton(
-      onPressed: () => _openComposeSheet(context),
-      backgroundColor: Colors.blue,
-      shape: const CircleBorder(),
-      elevation: 8,
-      child: const Icon(Icons.edit, color: Colors.white),
-    );
-  }
-}
+    final GlobalKey<ExpandableFabState> fabKey =
+        GlobalKey<ExpandableFabState>();
 
-//for adding a compose tweet overlay
-
-class ComposeTweetOverlay extends StatelessWidget {
-  const ComposeTweetOverlay({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Material(
-      color: Colors.black.withOpacity(0.6),
-      child: Center(
-        child: Container(
-              margin: const EdgeInsets.all(20),
-              padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 20),
-              width: double.infinity,
-              constraints: const BoxConstraints(maxWidth: 500),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(24),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.1),
-                    blurRadius: 20,
-                    offset: const Offset(0, 10),
-                  ),
-                ],
-              ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Close icon on top right
-                  Align(
-                    alignment: Alignment.topRight,
-                    child: GestureDetector(
-                      onTap: () => Navigator.of(context).pop(),
-                      child: Container(
-                        padding: const EdgeInsets.all(8),
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Colors.grey[200],
-                        ),
-                        child: const Icon(Icons.close, size: 20),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-
-                  // Header
-                  const Text(
-                    "Compose Special Oder",
-                    style: TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black87,
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-
-                  // Text field
-                  TextField(
-                    maxLines: 5,
-                    minLines: 3,
-                    decoration: InputDecoration(
-                      hintText: "What special order would you like to make?",
-                      hintMaxLines: 2,
-                      hintStyle: const TextStyle(color: Colors.grey),
-                      filled: true,
-                      fillColor: Colors.grey[100],
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(16),
-                        borderSide: BorderSide.none,
-                      ),
-                      contentPadding: const EdgeInsets.symmetric(
-                        vertical: 14,
-                        horizontal: 16,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-
-                  // Tweet button
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton.icon(
-                      onPressed: () {
-                        Navigator.of(context).pop(); // Or handle tweet logic
-                      },
-                      icon: const Icon(Icons.send),
-                      label: const Text("Send Special Order"),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.blue,
-                        foregroundColor: Colors.white,
-                        padding: const EdgeInsets.symmetric(vertical: 14),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                        textStyle: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            )
-            .animate()
-            .scale(duration: 300.ms, curve: Curves.easeOutBack)
-            .fadeIn(duration: 300.ms),
+    return ExpandableFab(
+      key: fabKey,
+      type: ExpandableFabType.up,
+      distance: 70,
+      childrenAnimation: ExpandableFabAnimation.none,
+      // fanAngle: 40,
+      openButtonBuilder: RotateFloatingActionButtonBuilder(
+        child: const Icon(Icons.add, size: 40),
+        fabSize: ExpandableFabSize.regular,
+        foregroundColor: Colors.amber,
+        backgroundColor: Colors.blue,
+        shape: const CircleBorder(),
+        angle: 3.14 * 2,
+        elevation: 2,
       ),
+      closeButtonBuilder: FloatingActionButtonBuilder(
+        size: 24,
+        builder: (
+          BuildContext context,
+          void Function()? onPressed,
+          Animation<double> progress,
+        ) {
+          return IconButton(
+            onPressed: onPressed,
+            icon: const Icon(Icons.check_circle_outline, size: 40),
+          );
+        },
+      ),
+      overlayStyle: ExpandableFabOverlayStyle(
+        color:
+            Theme.of(context).brightness == Brightness.dark
+                ? Colors.black.withOpacity(0.9)
+                : Colors.white.withOpacity(0.9),
+      ),
+
+      children: [
+        _buildActionRow(
+          label: 'Home',
+          icon: Icons.home,
+          onPressed:
+              () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => MyHomePage()),
+              ),
+        ),
+        _buildActionRow(
+          label: 'Email',
+          icon: Icons.email,
+          onPressed: () => _handleAction('Email'),
+        ),
+        _buildActionRow(
+          label: 'Favorite',
+          icon: Icons.star,
+          onPressed: () => _handleAction('Mark as Favorite'),
+        ),
+        /*FloatingActionButton.small(
+          heroTag: null,
+          tooltip: 'Add',
+          onPressed: () => _handleAction('Add'),
+          child: const Icon(Icons.add),
+        ),*/
+      ],
+    );
+  }
+
+  Widget _buildActionRow({
+    required String label,
+    required IconData icon,
+    required VoidCallback onPressed,
+  }) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+          margin: const EdgeInsets.only(right: 10),
+          decoration: BoxDecoration(
+            //color: Colors.deepPurple.withOpacity(0.1),
+            borderRadius: BorderRadius.circular(32),
+          ),
+          child: Text(label, style: const TextStyle(fontSize: 16)),
+        ),
+        FloatingActionButton.small(
+          heroTag: null,
+          tooltip: label,
+          onPressed: onPressed,
+          backgroundColor: Colors.white,
+          foregroundColor: Colors.blue, //Colors.deepPurple,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(32),
+          ),
+          // elevation: 2,
+          highlightElevation: 4,
+          focusElevation: 4,
+          hoverElevation: 4,
+
+          // splashColor: Colors.deepPurple.withOpacity(0.2),
+          // highlightColor: Colors.deepPurple.withOpacity(0.2),
+          child: Icon(icon),
+        ),
+      ],
     );
   }
 }
